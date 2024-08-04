@@ -1,0 +1,58 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "vercel-build.sh",
+        "use": "@vercel/python",
+        "config": {
+          "maxLambdaSize": "50mb",
+          "runtime": "python3.12"
+        }
+      
+      },
+      {
+        "src": "staticfiles/**/*",
+        "use": "@vercel/static"
+      },
+      {
+        "src": "package.json",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "public"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "myapp/manage.py"
+      },
+      {
+        "src": "/feedback/:id",
+        "dest": "/api/feedback/:id"
+      },
+      {
+        "src": "/feedback/((?!general).*)",
+        "dest": "/api/feedback/general"
+      }
+    ],
+    "functions": {
+      "pages/api/users/**/*.js": {
+        "maxDuration": 30
+      }
+    },
+    "env": {
+      "SECRET_KEY": "t!m(8q3_7yzj8&1(b-f%q!c@17_d0r!8)*gq!@4g(7d3c#d)4z",
+      "DATABASE_URL": "mysql://root:14082004@localhost:3306/BookLib",
+      "DEBUG": "false",
+      "ALLOWED_HOSTS": "BookLib.vercel.app"
+    },
+    "scripts": {
+      "build": "next build"
+    },
+    "engines": {
+      "pnpm": "^7.5.1"
+    },
+    "packageManager": "pnpm@7.5.1"
+  }
+  
